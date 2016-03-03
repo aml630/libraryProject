@@ -1,0 +1,4 @@
+@foreach(var patron in @Model)
+{
+<li><a href = "/checkoutBook/@patron.GetId()">@patron.GetTitle()</a></li>
+}

@@ -15,6 +15,10 @@
 <ul>
 @foreach (var author in Model) {
   <li><a href="/authorbooks/@author.GetId()">@author.GetAuthor_name()</a></li>
+  <form action ='/author/delete/@author.GetId()' method = "post">
+  <input type="hidden" name="_method" value="DELETE">
+  <button>Delete</button>
+  </form>
 }
 </ul>
 
@@ -22,6 +26,12 @@
   <input name = "Search"></input>
   <button>Search Book Titles</button>
 </form>
+</br>
+<form action = "/addPatron" method = "post">
+  <input name = "patronName" placeholder = "Your Name Here"></input>
+  <button>Get Library Card</button>
+</form>
+
 
 
 

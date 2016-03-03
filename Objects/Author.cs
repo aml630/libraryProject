@@ -223,51 +223,6 @@ namespace LibraryNameSpace
       return books;
     }
 
-    // public static Book SearchBooks(string searchBooks)
-    // {
-    //   SqlConnection conn = DB.Connection();
-    //   SqlDataReader rdr = null;
-    //   conn.Open();
-    //
-    //   // List<Book> books = new List<Book>{};
-    //
-    //   SqlCommand cmd = new SqlCommand("SELECT * FROM books WHERE title = @search", conn);
-    //
-    //   SqlParameter AuthorIdParameter = new SqlParameter();
-    //   AuthorIdParameter.ParameterName = "@search";
-    //   AuthorIdParameter.Value = searchBooks;
-    //
-    //   cmd.Parameters.Add(AuthorIdParameter);
-    //
-    //   rdr = cmd.ExecuteReader();
-    //
-    //   // List<int> booksIds = new List<int> {};
-    //   int foundBookId = 0;
-    //   string foundBookTitle = null;
-    //
-    //
-    //   while(rdr.Read())
-    //   {
-    //     int foundBookId = rdr.GetInt32(0);
-    //     string foundBookTitle = rdr.GetString(1);
-    //
-    //     Book newBook = new Book(booksName, booksId);
-    //
-    //     // books.Add(newBook);
-    //   }
-    //   if (rdr != null)
-    //   {
-    //     rdr.Close();
-    //   }
-    //   if (conn != null)
-    //   {
-    //     conn.Close();
-    //   }
-    //
-    //   return newBook;
-    // }
-
-
     public void Update(string newAuthor_name)
     {
       SqlConnection conn = DB.Connection();
@@ -308,7 +263,9 @@ namespace LibraryNameSpace
       SqlConnection conn = DB.Connection();
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("DELETE FROM authors WHERE id = @AuthorId; DELETE FROM books_authors WHERE Author_id = @AuthorId;", conn);
+
+      SqlCommand cmd = new SqlCommand("DELETE books FROM books JOIN books_authors on (books.id = books_authors.book_id) JOIN authors on (authors.id = books_authors.author_id) WHERE authors.id = @AuthorId; DELETE FROM authors WHERE id = @AuthorId; DELETE FROM books_authors WHERE author_id = @AuthorId", conn);
+
       SqlParameter AuthorIdParameter = new SqlParameter();
       AuthorIdParameter.ParameterName = "@AuthorId";
       AuthorIdParameter.Value = this.GetId();

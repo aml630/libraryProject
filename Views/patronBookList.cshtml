@@ -1,0 +1,8 @@
+<h1>Books you have (and need to return!)</h1>
+
+@foreach(var book in @Model)
+{
+<li>Book:  @book.GetTitle()</li>
+<li>Due Back: @book.GetDateTime()</li>
+
+}

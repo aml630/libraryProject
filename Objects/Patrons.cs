@@ -142,6 +142,30 @@ namespace LibraryNameSpace
     }
   }
 
+  public void AddBook(Book newBook)
+  {
+    SqlConnection conn = DB.Connection();
+    conn.Open();
+
+    SqlCommand cmd = new SqlCommand("INSERT INTO books_authors (author_id, book_id) VALUES (@PatronId, @BookId)", conn);
+
+    SqlParameter AuthorIdParameter = new SqlParameter();
+    AuthorIdParameter.ParameterName = "@PatronId";
+    AuthorIdParameter.Value = this.GetId();
+    cmd.Parameters.Add(AuthorIdParameter);
+
+    SqlParameter booksIdParameter = new SqlParameter();
+    booksIdParameter.ParameterName = "@BookId";
+    booksIdParameter.Value = newBook.GetId();
+    cmd.Parameters.Add(booksIdParameter);
+
+    cmd.ExecuteNonQuery();
+
+    if (conn != null)
+    {
+      conn.Close();
+    }
+  }
 
   public void Update(string newPatron_Title)
   {
@@ -179,8 +203,6 @@ namespace LibraryNameSpace
       conn.Close();
     }
   }
-
-
 
   public static void DeleteAll()
   {
@@ -337,7 +359,7 @@ namespace LibraryNameSpace
     SqlConnection conn = DB.Connection();
     conn.Open();
 
-    SqlCommand cmd = new SqlCommand("DELETE FROM patrons WHERE id = @Patron_id; DELETE FROM books_patrons WHERE patron_id = @Patron_id;", conn);
+    SqlCommand cmd = new SqlCommand("DELETE FROM patrons WHERE id = @Patron_id; DELETE FROM books_patrons WHERE patron_id = @Patron_id", conn);
 
     SqlParameter patronIdParameter = new SqlParameter();
     patronIdParameter.ParameterName = "@Patron_id";

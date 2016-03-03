@@ -81,6 +81,45 @@ namespace LibraryNameSpace
       return AllBooks;
     }
 
+    public DateTime GetDate()
+    {
+      DateTime Date = new DateTime(2015, 1, 1);
+
+      SqlConnection conn = DB.Connection();
+      SqlDataReader rdr = null;
+      conn.Open();
+
+      SqlCommand cmd = new SqlCommand("SELECT due_date FROM books_patrons WHERE id = @patronID", conn);
+
+      SqlParameter patronIdParameter = new SqlParameter();
+      patronIdParameter.ParameterName = "@patronID";
+      patronIdParameter.Value = this.GetId();
+      cmd.Parameters.Add(patronIdParameter);
+
+
+      rdr = cmd.ExecuteReader();
+
+      while(rdr.Read())
+      {
+        Date = rdr.GetDateTime(0);
+        // int bookId = rdr.GetInt32(0);
+        // string bookTitle = rdr.GetString(1);
+        // bool Checked_out = rdr.GetBoolean(2);
+        // Book newBook = new Book(bookTitle, Checked_out, bookId);
+        // AllBooks.Add(newBook);
+      }
+      if (rdr != null)
+      {
+        rdr.Close();
+      }
+      if (conn != null)
+      {
+        conn.Close();
+      }
+      // string stringDate = date.ToString();
+      return Date;
+    }
+
     public static List<Book> SearchBooks(string searchBooks)
     {
       SqlConnection conn = DB.Connection();
@@ -244,13 +283,18 @@ namespace LibraryNameSpace
       SqlDataReader rdr;
       conn.Open();
 
-      SqlCommand cmd = new SqlCommand("UPDATE books SET checked_out = 1 OUTPUT INSERTED.checked_out WHERE id = @BookId;", conn);
+      SqlCommand cmd = new SqlCommand("UPDATE books SET checked_out = 1 OUTPUT INSERTED.checked_out WHERE id = @BookId; UPDATE books_patrons SET due_date = @DueDateId OUTPUT INSERTED.due_date WHERE id = @BookId", conn);
 
       SqlParameter newBookIdParameter = new SqlParameter();
       newBookIdParameter.ParameterName = "@BookId";
-      newBookIdParameter.Value =  this.GetId();
+      newBookIdParameter.Value = this.GetId();
+
+      SqlParameter newDueDateIdParameter = new SqlParameter();
+      newDueDateIdParameter.ParameterName = "@DueDateId";
+      newDueDateIdParameter.Value = DateTime.Now;
 
       cmd.Parameters.Add(newBookIdParameter);
+      cmd.Parameters.Add(newDueDateIdParameter);
       rdr = cmd.ExecuteReader();
 
       while(rdr.Read())

@@ -72,8 +72,9 @@ namespace LibraryNameSpace
       Patch["/authorbooks/Checkout/{id}"] = parameters => {
         Book newBook = Book.Find(parameters.id);
         newBook.CheckedOutUpdateTrue();
-        List<Author> allAuthors = Author.GetAll();
-        return View["index.cshtml", allAuthors];
+
+        List<Patron> allPatrons = Patron.GetAll();
+        return View["patronList.cshtml", allPatrons];
       };
 
       Patch["/authorbooks/Checkin/{id}"] = parameters => {
@@ -83,6 +84,25 @@ namespace LibraryNameSpace
         return View["index.cshtml", allAuthors];
       };
 
+      Post["/addPatron"] = _ => {
+        Patron newPatron = new Patron(Request.Form["patronName"]);
+        newPatron.Save();
+        List<Author> allAuthors = Author.GetAll();
+        return View["index.cshtml", allAuthors];
+      };
+
+      Get["/checkoutBook/{id}"] = parameters => {
+        Patron newPatron = Patron.Find(parameters.id);
+        List<Book> patronBooks = newPatron.GetPatronBooks();
+        return View["patronBookList.cshtml", patronBooks];
+      };
+
+      Delete["/author/delete/{id}"] = parameters => {
+        Author newAuthor = Author.Find(parameters.id);
+        newAuthor.Delete();
+        List<Author> allAuthors = Author.GetAll();
+        return View["index.cshtml", allAuthors];
+      };
 
 
 

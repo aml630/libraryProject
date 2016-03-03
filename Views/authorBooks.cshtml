@@ -14,6 +14,8 @@
 
       <li>@book.GetTitle()</li>
       <li>@book.GetCheckedOut()</li>
+      <li>@book.GetDate()</li>
+
 
       <form action ='/authorbooks/Checkout/@book.GetId()' method = "post">
       <input type="hidden" name="_method" value="PATCH">

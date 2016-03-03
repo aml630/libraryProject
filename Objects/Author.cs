@@ -179,7 +179,7 @@ namespace LibraryNameSpace
 
       List<Book> books = new List<Book>{};
 
-      SqlCommand cmd = new SqlCommand("SELECT books.* FROM authors JOIN books_authors on (authors.id = books_authors.author_id) JOIN books on (books.id = books_authors.book_id) where authors.id = @AuthorId", conn);
+      SqlCommand cmd = new SqlCommand("SELECT books.* FROM authors JOIN books_authors on (authors.id = books_authors.author_id) JOIN books on (books.id = books_authors.book_id) WHERE authors.id = @AuthorId", conn);
 
       //select from the books table
       //get your targets from the authors table
